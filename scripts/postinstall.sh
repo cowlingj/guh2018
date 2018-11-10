@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-[ ! -f 'log' ] && touch 'log'
+LOG=/home/bitnami/install.log
 
-echo "postinstall" >> log
+[ ! -f "$LOG" ] && touch "$LOG"
+
+echo "postinstall" >> "LOG"
