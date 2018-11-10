@@ -1,3 +1,4 @@
 # ignore these directories 
 /lib/
 /install/
+/exec/
