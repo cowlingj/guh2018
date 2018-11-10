@@ -1,2 +1,3 @@
-# ignore everything in the lib directory
+# ignore these directories 
 /lib/
+/install/
