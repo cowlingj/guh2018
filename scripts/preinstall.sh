@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-[ ! -d 'log' ] && mkdir 'log'
+[ ! -f 'log' ] && touch 'log'
 
 echo "preinstall" >> log
