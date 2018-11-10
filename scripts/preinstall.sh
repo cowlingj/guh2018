@@ -4,4 +4,4 @@ LOG=/home/bitnami/install.log
 
 [ ! -f "$LOG" ] && touch "$LOG"
 
-echo "preinstall" >> "LOG"
+echo "preinstall" >> "$LOG"

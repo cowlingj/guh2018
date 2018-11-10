@@ -4,4 +4,4 @@ LOG=/home/bitnami/install.log
 
 [ ! -f "$LOG" ] && touch "$LOG"
 
-echo "start" >> "LOG"
+echo "start" >> "$LOG"

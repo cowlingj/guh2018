@@ -4,4 +4,4 @@ LOG=/home/bitnami/install.log
 
 [ ! -f "$LOG" ] && touch "$LOG"
 
-echo "postinstall" >> "LOG"
+echo "postinstall" >> "$LOG"
