@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Copy kafka-1.3.5.tar.gz to the lib/Py directory
 set -e
-PY_DIR='../lib/Py'
-INSTALL_DIR='../install'
+PY_DIR='lib/Py'
+INSTALL_DIR='install'
 
 if [ ! -d "$INSTALL_DIR" ]; then
   mkdir -p "$INSTALL_DIR" 

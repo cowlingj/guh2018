@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Copy kafka-clients-2.0.0.jar to the lib/java directory
 set -e
-JAVA_DIR='../lib/java'
+JAVA_DIR='lib/java'
 if [ ! -d "$JAVA_DIR" ]; then
   mkdir -p "$JAVA_DIR" 
 fi

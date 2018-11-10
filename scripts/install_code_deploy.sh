@@ -10,4 +10,6 @@ curl -O "https://${BUCKET_NAME}.s3.amazonaws.com/latest/install"
 chmod +x ./install
 sudo ./install auto
 
+sudo service codedeploy-agent start
+
 unset BUCKET_NAME

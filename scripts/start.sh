@@ -1,7 +1,3 @@
 #!/usr/bin/env bash
 
-LOG=/home/bitnami/install.log
-
-[ ! -f "$LOG" ] && touch "$LOG"
-
-echo "start" >> "$LOG"
+scripts/run/${APPLICATION_NAME}.sh

@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-LOG=/home/bitnami/install.log
+cd /home/bitnami/app
 
-[ ! -f "$LOG" ] && touch "$LOG"
-
-echo "postinstall" >> "$LOG"
+scripts/install_kafka_py.sh
+scripts/install_kafka_java.sh
