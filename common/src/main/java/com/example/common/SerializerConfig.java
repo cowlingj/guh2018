@@ -1,11 +1,15 @@
 package com.example.common;
 
+import com.example.common.data.Message;
+import org.apache.kafka.common.serialization.Serializer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.Map;
+import java.util.Optional;
 
-public class Serializer implements org.apache.kafka.common.serialization.Serializer {
+public class SerializerConfig implements Serializer<Optional<Message>> {
 
     private ObjectOutputStream objectOut;
     private ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
@@ -16,10 +20,10 @@ public class Serializer implements org.apache.kafka.common.serialization.Seriali
     }
 
     @Override
-    public byte[] serialize(String topic, Object o) {
+    public byte[] serialize(String topic, Optional<Message> m) {
         try {
             objectOut = new ObjectOutputStream(this.bytesOut);
-            objectOut.writeObject(o);
+            objectOut.writeObject(m);
             return bytesOut.toByteArray();
         } catch (IOException e) {
             return new byte[0];

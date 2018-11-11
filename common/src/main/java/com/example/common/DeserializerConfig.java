@@ -1,5 +1,6 @@
 package com.example.common;
 
+import com.example.common.data.Message;
 import org.apache.kafka.common.serialization.Deserializer;
 
 import java.io.ByteArrayInputStream;
@@ -8,7 +9,7 @@ import java.io.ObjectInputStream;
 import java.util.Map;
 import java.util.Optional;
 
-public class Deserializer implements org.apache.kafka.common.serialization.Deserializer {
+public class DeserializerConfig implements Deserializer<Optional<Message>> {
 
     private ObjectInputStream objectsIn;
     private ByteArrayInputStream bytesIn;
@@ -19,11 +20,11 @@ public class Deserializer implements org.apache.kafka.common.serialization.Deser
     }
 
     @Override
-    public Object deserialize(String topic, byte[] data) {
+    public Optional<Message> deserialize(String topic, byte[] data) {
         try {
             bytesIn = new ByteArrayInputStream(data);
             objectsIn = new ObjectInputStream(bytesIn);
-            return Optional.of(objectsIn.readObject());
+            return Optional.of((Message) objectsIn.readObject());
         } catch (ClassNotFoundException | IOException e) {
             return Optional.empty();
         }
