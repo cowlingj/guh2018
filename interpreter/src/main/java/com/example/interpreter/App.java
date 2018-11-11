@@ -1,77 +1,50 @@
 package com.example.interpreter;
 
-import java.util.concurrent.ExecutionException;
+import com.example.common.Deserializer;
+import com.example.common.Serializer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.log4j.LogManager;
+import java.io.IOException;
+import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.Consumer;
-import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
+public class App {
 
-public class App 
-{
+  public static final String ACTION_CONFIG = "actions.properties";
+  public static final String ALERT_CONFIG = "alerts.properties";
+  public static final String UPDATE_CONFIG = "update.properties";
+
   public static void main(String[] args) {
-    runProducer();
-    runConsumer();
-  }
+    try {
+      Properties actionPropertiesFile = new Properties();
+      actionPropertiesFile.load(ClassLoader.getSystemResourceAsStream(ACTION_CONFIG));
+      Properties actionStreamProperties = new Properties();
+      actionStreamProperties.put(StreamsConfig.APPLICATION_ID_CONFIG,
+              App.class.getCanonicalName());
+      actionStreamProperties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG,
+              actionPropertiesFile.getProperty("listeners"));
+      actionStreamProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+              Serializer.class.getCanonicalName());
+      actionStreamProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+              Serializer.class.getCanonicalName());
+      actionStreamProperties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+              Deserializer.class.getCanonicalName());
+      actionStreamProperties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+              Deserializer.class.getCanonicalName());
 
-  static void runConsumer() 
-  {
-    Consumer<Long, String> consumer = ConsumerCreator.createConsumer();
 
-    int noMessageFound = 0;
+      Properties alertProperties = new Properties();
+      alertProperties.load(ClassLoader.getSystemResourceAsStream(ALERT_CONFIG));
 
-    while (true) 
-    {
-      ConsumerRecords<Long, String> consumerRecords = consumer.poll(1000);
-      // 1000 is the time in milliseconds consumer will wait 
-      // if no record is found at broker.
-      if (consumerRecords.count() == 0) 
-      {
-        noMessageFound++;
-        if (noMessageFound > InterfaceKafkaConstants.MAX_NO_MESSAGE_FOUND_COUNT)
-          // If 'no message found count' is reached to threshold exit loop.  
-          break;
-        else
-          continue;
-      }
+      Properties updatePropertiesFile =  new Properties();
+      updatePropertiesFile.load(ClassLoader.getSystemResourceAsStream(UPDATE_CONFIG));
 
-      //print each record. 
-      consumerRecords.forEach(record -> {
-         System.out.println("Record Key " + record.key());
-         System.out.println("Record value " + record.value());
-         System.out.println("Record partition " + record.partition());
-         System.out.println("Record offset " + record.offset());
-      });
-
-        // commits the offset of record to broker. 
-        consumer.commitAsync();
-    }
-    consumer.close();
-  }
-
-  private static void runProducer()
-  {
-    Producer<Long, String> producer = ProducerCreator.createProducer();
-
-    for (int index = 0; index < InterfaceKafkaConstants.MESSAGE_COUNT; index++) 
-    {
-      ProducerRecord<Long, String> record = new ProducerRecord<Long, 
-                                            String>(InterfaceKafkaConstants.TOPIC_NAME,
-                                            "This is record " + index);
-      try 
-      {
-        RecordMetadata metadata = producer.send(record).get();
-        System.out.println("Record sent with key " 
-                           + index + " to partition " 
-                           + metadata.partition()
-                           + " with offset " + metadata.offset());
-      } 
-      catch (ExecutionException | InterruptedException e)
-      {
-        System.out.println("Error in sending record");
-        System.out.println(e);
-      }
+      new StreamsBuilder().stream("").to("");
+    } catch (IOException e) {
+      LogManager.getLogger(App.class).error(e);
+      System.exit(-1);
     }
   }
 }
