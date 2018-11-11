@@ -1,3 +1,5 @@
+package com.example.brainiv;
+
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -5,8 +7,6 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.LongSerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-
-import com.gaurav.kafka.constants.InterfaceKafkaConstants;
 
 public class ProducerCreator {
 
@@ -33,7 +33,7 @@ public class ProducerCreator {
     // Serialises the value object
     // The example value is 'String', so we use the StringSerializer
     // We can can create a custom serializer here too
-    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, i
+    props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
               StringSerializer.class.getName());
 
     // Determines the partition in which the record will go 

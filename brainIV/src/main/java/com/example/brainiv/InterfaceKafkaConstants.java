@@ -1,3 +1,5 @@
+package com.example.brainiv;
+
 // Constants we will be using further
 public interface InterfaceKafkaConstants 
 {

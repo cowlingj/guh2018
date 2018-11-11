@@ -1,3 +1,5 @@
+package com.example.brainiv;
+
 import java.util.Collections;
 import java.util.Properties;
 
@@ -6,8 +8,6 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.LongDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-
-import com.gaurav.kafka.constants.InterfaceKafkaConstants;
 
 public class ConsumerCreator 
 {
