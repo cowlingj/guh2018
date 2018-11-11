@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # install the Kafka Apache platform
 set -e
-INSTALL_DIR='../install'
+INSTALL_DIR='install'
 KAFKA_FILE='kafka.tgz'
-EXEC_DIR='../exec'
+EXEC_DIR='exec'
 
 if [ ! -d "$INSTALL_DIR" ]; then
   mkdir -p "$INSTALL_DIR"
