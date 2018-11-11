@@ -3,7 +3,7 @@
 set -e
 INSTALL_DIR='install'
 KAFKA_FILE='kafka.tgz'
-EXEC_DIR='exec'
+BIN_DIR='bin'
 
 if [ ! -d "$INSTALL_DIR" ]; then
   mkdir -p "$INSTALL_DIR"
@@ -15,10 +15,10 @@ if [ ! -f "${INSTALL_DIR}/${KAFKA_FILE}" ]; then
   curl -o "${INSTALL_DIR}/${KAFKA_FILE}" http://www.mirrorservice.org/sites/ftp.apache.org/kafka/2.0.0/kafka_2.11-2.0.0.tgz 
 fi
 
-if [ ! -d "$EXEC_DIR" ]; then
-  mkdir -p "$EXEC_DIR"
+if [ ! -d "$BIN_DIR" ]; then
+  mkdir -p "$BIN_DIR"
 fi
 
-tar -xvzf "${INSTALL_DIR}/${KAFKA_FILE}" -C "$EXEC_DIR"
+tar -xvzf "${INSTALL_DIR}/${KAFKA_FILE}" -C "$BIN_DIR"
 
-unset -v INSTALL_DIR KAFKA_FILE EXEC_DIR
+unset -v INSTALL_DIR KAFKA_FILE BIN_DIR
