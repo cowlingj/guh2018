@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-ROOT=".."
-CONFIG_DIR="${ROOT}/kafka-server/config"
-KAFKA_DIR="${ROOT}/bin/kafka_2.11-2.0.0"
+CONFIG_DIR="kafka-server/config"
+KAFKA_DIR="bin/kafka_2.11-2.0.0"
 cd "$KAFKA_DIR"
 
 bin/zookeeper-server-start.sh "${CONFIG_DIR}/zookeeper.properties" &
