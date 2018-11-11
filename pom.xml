@@ -15,7 +15,7 @@
     <modules>
         <module>common</module>
         <module>interpreter</module>
-        <module>brainIV</module>
+        <module>brainiv</module>
     </modules>
 
 </project>
