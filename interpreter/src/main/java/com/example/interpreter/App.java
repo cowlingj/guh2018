@@ -5,13 +5,15 @@ import com.example.common.SerializerConfig;
 import com.example.common.data.Message;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
+import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
 import org.apache.kafka.streams.kstream.Predicate;
 import org.apache.kafka.streams.kstream.ValueMapper;
-//import org.apache.kafka.streams.kstream.KStreamBuilder;
 import org.apache.log4j.LogManager;
 import java.io.IOException;
 import java.io.Serializable;
@@ -79,14 +81,22 @@ public class App {
       updatePropertiesFile.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
               DeserializerConfig.class.getCanonicalName());
 
-      Serdes.serdeFrom(new SerializerConfig(), new DeserializerConfig());
+      Serde serde = Serdes.serdeFrom(new SerializerConfig(), new DeserializerConfig());
 
       Properties kafkaProperties = new Properties();
       kafkaProperties.load(ClassLoader.getSystemResourceAsStream(KAFKA_CONFIG));
 
-      KStream<Object, Optional<Message>> k = new StreamsBuilder()
-              .stream(kafkaProperties.getProperty(ACTION_TOPIC_KEY));
-       //.filter((o, serializable) -> serializable.isPresent());
+      KStream<Object, Float> s = new StreamsBuilder()
+              .stream(kafkaProperties.getProperty(ACTION_TOPIC_KEY),
+                      Consumed.with(Serdes.String(), Serdes.serdeFrom(
+                      new SerializerConfig(), new DeserializerConfig()
+              ))).mapValues((o)-> o.get())
+              .map((Object o, Message m) -> new KeyValue<>(o, m.amount));
+              s.filter((o, f) -> f.doubleValue() >= 1)
+                      .mapValues(Float::byteValue).to("topic");
+              s.filter((a, b) -> true);
+
+
 
     } catch (IOException e) {
       LogManager.getLogger(App.class).error(e);
